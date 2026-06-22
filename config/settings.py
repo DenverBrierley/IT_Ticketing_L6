@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'accounts',
+    'accounts', # Custom authentication app; defines our User model.
 ]
 
 MIDDLEWARE = [
@@ -117,4 +117,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
+# Use the custom user model in place of Django's default auth.User.
 AUTH_USER_MODEL = "accounts.User"
