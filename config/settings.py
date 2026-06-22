@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts', # Custom authentication app; defines our User model.
+    "tickets",  # Core domain: categories, tickets, and comments.
 ]
 
 MIDDLEWARE = [
