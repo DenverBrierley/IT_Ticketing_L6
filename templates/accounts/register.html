@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Register{% endblock %}
+{% block content %}
+  <h1 class="mb-4">Create an account</h1>
+  {# novalidate lets Django's server-side validation be the single source of truth. #}
+  <form method="post" novalidate>
+    {% csrf_token %}  {# CSRF protection token, required on every POST form. #}
+    {{ form.as_p }}    {# Renders fields with their validation error messages. #}
+    <button class="btn btn-primary" type="submit">Register</button>
+  </form>
+{% endblock %}
