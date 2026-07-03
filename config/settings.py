@@ -124,5 +124,5 @@ AUTH_USER_MODEL = "accounts.User"
 
 LOGIN_URL = "login"
 
-LOGIN_REDIRECT_URL = "login"
+LOGIN_REDIRECT_URL = "tickets:list"
 LOGOUT_REDIRECT_URL = "login"
