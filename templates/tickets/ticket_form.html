@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{% if object %}Edit ticket{% else %}Raise a ticket{% endif %}{% endblock %}
+{% block content %}
+  <h1 class="mb-4">{% if object %}Edit ticket #{{ object.pk }}{% else %}Raise a ticket{% endif %}</h1>
+
+  {# Django's server-side validation as the source of truth. #}
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}   {# Fields render with their own error messages inline. #}
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="{% url 'tickets:list' %}" class="btn btn-outline-secondary">Cancel</a>
+  </form>
+{% endblock %}

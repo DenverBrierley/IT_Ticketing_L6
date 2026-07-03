@@ -4,6 +4,13 @@
   <a href="{% url 'tickets:list' %}" class="btn btn-sm btn-outline-secondary mb-3">&larr; Back to tickets</a>
 
   <h1 class="mb-3">#{{ ticket.pk }} — {{ ticket.title }}</h1>
+  
+  <div class="mb-3">
+    <a href="{% url 'tickets:update' ticket.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+    {% if user.is_administrator %}
+      <a href="{% url 'tickets:delete' ticket.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+    {% endif %}
+  </div>
 
   <dl class="row">
     <dt class="col-sm-3">Status</dt><dd class="col-sm-9">{{ ticket.get_status_display }}</dd>

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Delete ticket{% endblock %}
+{% block content %}
+  <h1 class="mb-4">Delete ticket #{{ object.pk }}?</h1>
+  <div class="alert alert-warning">
+    This will permanently delete “{{ object.title }}”. This action cannot be undone.
+  </div>
+  {# Deletion happens via POST + CSRF token #}
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a href="{% url 'tickets:detail' object.pk %}" class="btn btn-outline-secondary">Cancel</a>
+  </form>
+{% endblock %}
