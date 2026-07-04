@@ -11,19 +11,26 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from a local .env file (not committed to git).
+load_dotenv(BASE_DIR / ".env")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-g=cns4ufsvmm^l1lol6(jzqhxyo&(2jfs2e_^ml)rb!kbm&s!='
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
+
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
 
 
 # Application definition
@@ -38,6 +45,7 @@ INSTALLED_APPS = [
     'accounts', # Custom authentication app; defines our User model.
     "tickets",  # Core domain: categories, tickets, and comments.
     "dashboard",  # Role-aware landing page.
+    "axes",  # Brute-force login protection 
 ]
 
 MIDDLEWARE = [
@@ -48,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "axes.middleware.AxesMiddleware",
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -125,3 +134,27 @@ LOGIN_URL = "login"
 
 LOGIN_REDIRECT_URL = "dashboard:home"
 LOGOUT_REDIRECT_URL = "login"
+
+#block attempts before the normal check; ModelBackend then does the real auth.
+AUTHENTICATION_BACKENDS = [
+    "axes.backends.AxesStandaloneBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
+
+# Lock an account/IP after 5 failed attempts; reset the counter after 1 hour.
+AXES_FAILURE_LIMIT = 5
+AXES_COOLOFF_TIME = 1  
+AXES_RESET_ON_SUCCESS = True  # A successful login clears the failure count.
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True            # Force HTTPS.
+    SESSION_COOKIE_SECURE = True          # Session cookie only sent over HTTPS.
+    CSRF_COOKIE_SECURE = True             # CSRF cookie only sent over HTTPS.
+    SECURE_HSTS_SECONDS = 31536000        # Tell browsers to stick to HTTPS for a year.
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True    # Stop MIME-type sniffing.
+    # Trust the proxy's HTTPS header (needed on hosts like Render).
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+X_FRAME_OPTIONS = "DENY"                  # Prevent clickjacking via iframes.
