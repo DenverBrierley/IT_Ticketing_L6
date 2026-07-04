@@ -6,7 +6,7 @@ A secure IT support ticketing web application built with Django, created for the
 support agents triage and resolve them, and administrators manage users, categories,
 and the wider system.
 
-**Live demo:** https://YOUR-APP-NAME.onrender.com
+**Live demo:** https://evri-helpdesk.onrender.com/
 *(Hosted on Render's free tier — the service sleeps after inactivity, so the first
 request may take 30–60 seconds to wake.)*
 
