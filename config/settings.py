@@ -32,6 +32,11 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",")
 
+# Render provides the external hostname at runtime; add it automatically.
+RENDER_HOST = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+if RENDER_HOST:
+    ALLOWED_HOSTS.append(RENDER_HOST)
+
 
 # Application definition
 
@@ -168,3 +173,8 @@ if not DEBUG:
 X_FRAME_OPTIONS = "DENY"                  # Prevent clickjacking via iframes.
 
 AXES_ENABLED = os.environ.get("AXES_ENABLED", "True") == "True"
+
+# Trust the Render domain for CSRF-protected POST requests over HTTPS.
+CSRF_TRUSTED_ORIGINS = []
+if RENDER_HOST:
+    CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_HOST}")
