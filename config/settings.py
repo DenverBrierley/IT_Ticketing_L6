@@ -25,8 +25,6 @@ SECRET_KEY = 'django-insecure-g=cns4ufsvmm^l1lol6(jzqhxyo&(2jfs2e_^ml)rb!kbm&s!=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -39,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts', # Custom authentication app; defines our User model.
     "tickets",  # Core domain: categories, tickets, and comments.
+    "dashboard",  # Role-aware landing page.
 ]
 
 MIDDLEWARE = [
@@ -124,5 +123,5 @@ AUTH_USER_MODEL = "accounts.User"
 
 LOGIN_URL = "login"
 
-LOGIN_REDIRECT_URL = "tickets:list"
+LOGIN_REDIRECT_URL = "dashboard:home"
 LOGOUT_REDIRECT_URL = "login"

@@ -6,7 +6,7 @@ from django.views.generic import RedirectView
 from accounts import views as account_views
 
 urlpatterns = [
-    path("", RedirectView.as_view(pattern_name="tickets:list"), name="home"),
+    path("", include("dashboard.urls")),
     path("admin/", admin.site.urls),
 
     # Custom registration view.
