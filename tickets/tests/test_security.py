@@ -1,10 +1,3 @@
-"""
-Security-focused tests mapping directly to the OWASP defences in the report.
-
-  * test_user_cannot_access_others_ticket  -> A01 Broken Access Control
-  * test_comment_body_is_escaped           -> A03 Cross-Site Scripting
-  * test_weak_password_rejected            -> A07 Authentication Failures
-"""
 import pytest
 from django.urls import reverse
 
