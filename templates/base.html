@@ -16,6 +16,10 @@
       <a class="navbar-brand" href="/">EVRi IT Helpdesk</a>
       <div class="navbar-nav ms-auto">
         {% if user.is_authenticated %}
+          {% if user.is_administrator %}
+            <a class="nav-link" href="{% url 'tickets:category_list' %}">Categories</a>
+            <a class="nav-link" href="{% url 'accounts:user_list' %}">Users</a>
+          {% endif %}
           {# Greet the logged-in user and offer logout. #}
           <span class="navbar-text text-light me-3">{{ user.username }} ({{ user.get_role_display }})</span>
           <form method="post" action="{% url 'logout' %}" class="d-inline">
@@ -24,7 +28,7 @@
           </form>
         {% else %}
           <a class="nav-link" href="{% url 'login' %}">Log in</a>
-          <a class="nav-link" href="{% url 'register' %}">Register</a>
+          <a class="nav-link" href="{% url 'accounts:register' %}">Register</a>
         {% endif %}
       </div>
     </div>

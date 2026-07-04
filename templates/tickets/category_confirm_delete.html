@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Delete category{% endblock %}
+{% block content %}
+  <h1 class="mb-4">Delete “{{ object.name }}”?</h1>
+  <div class="alert alert-warning">
+    Categories in use by tickets cannot be deleted (they are protected).
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, delete</button>
+    <a href="{% url 'tickets:category_list' %}" class="btn btn-outline-secondary">Cancel</a>
+  </form>
+{% endblock %}

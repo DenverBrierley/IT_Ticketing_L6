@@ -12,6 +12,9 @@ urlpatterns = [
     # Custom registration view.
     path("register/", account_views.register, name="register"),
 
+    #register and user management
+    path("accounts/", include("accounts.urls")), 
+
     # built-in login/logout views handle the secure session work.
     path("login/", auth_views.LoginView.as_view(), name="login"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),

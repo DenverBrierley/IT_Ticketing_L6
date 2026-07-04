@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Category{% endblock %}
+{% block content %}
+  <h1 class="mb-4">{% if object %}Edit category{% else %}New category{% endif %}</h1>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="{% url 'tickets:category_list' %}" class="btn btn-outline-secondary">Cancel</a>
+  </form>
+{% endblock %}
