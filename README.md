@@ -19,13 +19,13 @@ request may take 30–60 seconds to wake.)*
 The database is seeded with demonstration accounts (all share the same password).
 These are demo-only credentials with no access to anything sensitive.
 
-| Username        | Role          | Password       |
-|-----------------|---------------|----------------|
-| `admin_denver`  | Administrator | `DemoPass123!` |
-| `agent_sam`     | Support Agent | `DemoPass123!` |
-| `agent_priya`   | Support Agent | `DemoPass123!` |
-| `user_leeds`    | End User      | `DemoPass123!` |
-| `user_courier`  | End User      | `DemoPass123!` |
+| Username        | Role          |
+|-----------------|---------------|
+| `admin_denver`  | Administrator |
+| `agent_sam`     | Support Agent |
+| `agent_priya`   | Support Agent |
+| `user_leeds`    | End User      |
+| `user_courier`  | End User      |
 
 Log in as `admin_denver` to see the full feature set, or as `user_leeds` to see the
 restricted end-user view.
