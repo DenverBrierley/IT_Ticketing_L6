@@ -158,3 +158,5 @@ if not DEBUG:
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 X_FRAME_OPTIONS = "DENY"                  # Prevent clickjacking via iframes.
+
+AXES_ENABLED = os.environ.get("AXES_ENABLED", "True") == "True"
