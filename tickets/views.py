@@ -3,6 +3,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.shortcuts import redirect
+from .comment_forms import CommentForm
 
 from accounts.mixins import OwnerOrStaffRequiredMixin, AdminRequiredMixin
 from .forms import TicketCreateForm, TicketStaffForm
@@ -42,8 +44,37 @@ class TicketDetailView(OwnerOrStaffRequiredMixin, LoginRequiredMixin, DetailView
             "category", "assigned_to", "created_by"
         )
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comments = self.object.comments.select_related("author")
+        # Internal comments are hidden from end users; staff see everything.
+        if not self.request.user.is_support_staff:
+            comments = comments.filter(is_internal=False)
+        context["comments"] = comments
+        context["comment_form"] = CommentForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        """Handle a submitted comment on the ticket detail page."""
+        self.object = self.get_object()  # Re-runs the ownership check.
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.ticket = self.object
+            comment.author = request.user          # Author from session, not the form.
+            # Only staff may create internal notes; the checkbox is only shown to them.
+            if request.user.is_support_staff and request.POST.get("is_internal"):
+                comment.is_internal = True
+            comment.save()
+            messages.success(request, "Comment added.")
+            return redirect("tickets:detail", pk=self.object.pk)
+        # Invalid: re-render the page with the form errors shown.
+        context = self.get_context_data(object=self.object)
+        context["comment_form"] = form
+        return self.render_to_response(context)
+    
 class TicketCreateView(LoginRequiredMixin, CreateView):
-    """Raise a new ticket. Any logged-in user may create one."""
+    #Raise a new ticket. Any logged-in user may create one.
 
     model = Ticket
     form_class = TicketCreateForm
