@@ -178,3 +178,29 @@ AXES_ENABLED = os.environ.get("AXES_ENABLED", "True") == "True"
 CSRF_TRUSTED_ORIGINS = []
 if RENDER_HOST:
     CSRF_TRUSTED_ORIGINS.append(f"https://{RENDER_HOST}")
+
+    LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "{asctime} [{levelname}] {name}: {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "standard",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "level": "INFO",
+            "propagate": False,
+        },
+        "tickets": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "accounts": {"handlers": ["console"], "level": "INFO", "propagate": False},
+    },
+}
